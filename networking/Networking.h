@@ -1,5 +1,5 @@
-#ifndef NETWORKING_H_
-#define NETWORKING_H_
+#ifndef NETWORKING_NETWORKING_H_
+#define NETWORKING_NETWORKING_H_
 
 #include <string>
 
@@ -12,4 +12,4 @@ public:
 
 } /* namespace Flix */
 
-#endif /* NETWORKING_H_ */
+#endif /* NETWORKING_NETWORKING_H_ */
