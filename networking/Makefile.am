@@ -14,6 +14,9 @@ headerdir = $(includedir)/networking
 header_HEADERS = \
     Networking.h
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = networking.pc
+
 MAINTAINERCLEANFILES = \
     Autoconf.h.in \
     Makefile.in

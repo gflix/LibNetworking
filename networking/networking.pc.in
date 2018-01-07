@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: networking
+Description: Slim library for providing common networking interfaces
+Version: @VERSION@
+Libs: -L${libdir} -lnetworking
+Cflags: -I${includedir}

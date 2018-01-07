@@ -33,6 +33,7 @@ AC_CONFIG_FILES([
     Makefile
     external/googletest/Makefile
     networking/Makefile
+    networking/networking.pc
     networking/tcp/Makefile
     tests/Makefile
 ])
