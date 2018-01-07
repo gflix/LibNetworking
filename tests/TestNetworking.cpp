@@ -3,5 +3,5 @@
 
 TEST(Networking, PackageInfo)
 {
-    EXPECT_EQ(Flix::Networking::getPackageInfo(), "libnetworking 0.1");
+    EXPECT_EQ(Flix::Networking::getPackageInfo(), "libnetworking 0.1.0");
 }

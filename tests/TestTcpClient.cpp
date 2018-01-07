@@ -15,3 +15,11 @@ TEST(TcpClient, ConnectValueRanges)
     EXPECT_ANY_THROW(tcpClient.connect(dummyHost, invalidTcpPortLow));
     EXPECT_ANY_THROW(tcpClient.connect(dummyHost, invalidTcpPortHigh));
 }
+
+TEST(TcpClient, Defaults)
+{
+    Flix::TcpClient tcpClient;
+
+    EXPECT_FALSE(tcpClient.isConnected());
+    EXPECT_EQ(tcpClient.getDescriptor(), -1);
+}

@@ -8,6 +8,7 @@ check_PROGRAMS = $(TESTS)
 
 gtest_SOURCES = \
     TestNetworking.cpp \
+    TestSelect.cpp \
     TestTcpClient.cpp
 
 gtest_LDADD = \
