@@ -16,6 +16,9 @@ public:
     bool isConnected(void) const;
     int getDescriptor(void) const;
 
+    void send(const std::string& data) const;
+    void receive(std::string& data, size_t bufferSize) const;
+
 protected:
     bool withinRange(int value, int min, int max) const;
 

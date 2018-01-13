@@ -1,11 +1,15 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <cstring>
+#include <memory>
+#include "../Select.h"
 #include "TcpClient.h"
 
 #define INVALID_DESCRIPTOR (-1)
 #define TCP_PORT_MIN (1)
 #define TCP_PORT_MAX (65535)
+#define SOCKET_READ_TIMEOUT_MICROSECS (100000)
+#define SOCKET_WRITE_TIMEOUT_MICROSECS (100000)
 
 namespace Flix {
 
@@ -87,8 +91,60 @@ bool TcpClient::isConnected(void) const
 
 int TcpClient::getDescriptor(void) const
 {
+    if (!isConnected())
+    {
+        throw std::string("not connected");
+    }
+
     return
         descriptor;
+}
+
+void TcpClient::send(const std::string& data) const
+{
+    if (!isConnected())
+    {
+        throw std::string("not connected");
+    }
+
+    Select select;
+    select.addWriteDescriptor(descriptor);
+    select.setTimeout(0, SOCKET_WRITE_TIMEOUT_MICROSECS);
+
+    if (select.execute() <= 0)
+    {
+        throw std::string("could not write to socket");
+    }
+
+    size_t dataSize = data.size();
+    ssize_t bytesWritten = write(descriptor, data.c_str(), data.size());
+
+    if (dataSize != bytesWritten)
+    {
+        throw std::string("could not write to socket");
+    }
+}
+
+void TcpClient::receive(std::string& data, size_t bufferSize) const
+{
+    if (!isConnected())
+    {
+        throw std::string("not connected");
+    }
+
+    Select select;
+    select.addReadDescriptor(descriptor);
+    select.setTimeout(0, SOCKET_READ_TIMEOUT_MICROSECS);
+
+    if (select.execute() <= 0)
+    {
+        throw std::string("read from socket timed out");
+    }
+
+    std::unique_ptr<char> buffer { static_cast<char*>(malloc(bufferSize)) };
+    ssize_t bytesRead = read(descriptor, buffer.get(), bufferSize);
+
+    data = std::move(std::string(buffer.get(), bytesRead));
 }
 
 bool TcpClient::withinRange(int value, int min, int max) const
