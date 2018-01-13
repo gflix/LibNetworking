@@ -19,9 +19,16 @@ TcpClient::~TcpClient()
     disconnect();
 }
 
-void TcpClient::connect(const std::string& host, int port)
+void TcpClient::connect(std::string host, int port)
 {
     disconnect();
+
+    size_t colonPosition = host.find_last_of(':');
+    if (colonPosition != std::string::npos)
+    {
+        port = std::stoi(host.substr(colonPosition + 1), nullptr, 10);
+        host.erase(colonPosition);
+    }
 
     if (host.empty() || !withinRange(port, TCP_PORT_MIN, TCP_PORT_MAX))
     {

@@ -10,7 +10,7 @@ public:
     TcpClient();
     virtual ~TcpClient();
 
-    void connect(const std::string& host, int port);
+    void connect(std::string host, int port);
     void disconnect(void);
 
     bool isConnected(void) const;
