@@ -11,6 +11,10 @@ gtest_SOURCES = \
     TestSelect.cpp \
     TestTcpClient.cpp
 
+gtest_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    -I$(top_srcdir)/external/googletest/include
+
 gtest_LDADD = \
     $(top_builddir)/networking/libnetworking.la \
     $(top_builddir)/external/googletest/libgtest.la
