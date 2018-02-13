@@ -1,5 +1,5 @@
-#include "Autoconf.h"
-#include "Networking.h"
+#include <networking/Autoconf.h>
+#include <networking/Networking.h>
 
 #ifndef PACKAGE_STRING
 #define PACKAGE_STRING "unknown"

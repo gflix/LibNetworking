@@ -1,6 +1,9 @@
 SUBDIRS = \
     tcp
 
+AM_CPPFLAGS = \
+    -I$(top_srcdir)
+
 lib_LTLIBRARIES = libnetworking.la
 
 libnetworking_la_SOURCES = \

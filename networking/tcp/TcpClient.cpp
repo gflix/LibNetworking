@@ -2,8 +2,8 @@
 #include <unistd.h>
 #include <cstring>
 #include <memory>
-#include "../Select.h"
-#include "TcpClient.h"
+#include <networking/Select.h>
+#include <networking/tcp/TcpClient.h>
 
 #define INVALID_DESCRIPTOR (-1)
 #define TCP_PORT_MIN (1)
