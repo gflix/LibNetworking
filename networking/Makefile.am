@@ -1,4 +1,5 @@
 SUBDIRS = \
+    digest \
     tcp
 
 AM_CPPFLAGS = \
@@ -13,6 +14,7 @@ libnetworking_la_SOURCES = \
     Select.h
 
 libnetworking_la_LIBADD = \
+    $(top_builddir)/networking/digest/libnetworking-digest.la \
     $(top_builddir)/networking/tcp/libnetworking-tcp.la
 
 headerdir = $(includedir)/networking

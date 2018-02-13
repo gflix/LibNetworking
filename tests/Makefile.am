@@ -9,6 +9,7 @@ check_PROGRAMS = $(TESTS)
 gtest_SOURCES = \
     TestNetworking.cpp \
     TestSelect.cpp \
+    TestSha1.cpp \
     TestTcpClient.cpp
 
 gtest_CPPFLAGS = \
