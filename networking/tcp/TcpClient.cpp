@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <cstring>
 #include <memory>
+#include <stdexcept>
 #include <networking/Select.h>
 #include <networking/tcp/TcpClient.h>
 
@@ -36,7 +37,7 @@ void TcpClient::connect(std::string host, int port)
 
     if (host.empty() || !withinRange(port, TCP_PORT_MIN, TCP_PORT_MAX))
     {
-        throw std::string("invalid arguments");
+        throw std::invalid_argument("invalid arguments");
     }
 
     addrinfo getAddrInfoHints;
@@ -49,7 +50,7 @@ void TcpClient::connect(std::string host, int port)
 
     if (getaddrinfo(host.c_str(), std::to_string(port).c_str(), &getAddrInfoHints, &getAddrInfoResult) != 0)
     {
-        throw std::string("could not resolve host");
+        throw std::runtime_error("could not resolve host");
     }
 
     for (addressInfo = getAddrInfoResult; addressInfo; addressInfo = addressInfo->ai_next)
@@ -70,7 +71,7 @@ void TcpClient::connect(std::string host, int port)
 
     if (!isConnected())
     {
-        throw std::string("could not connect to host");
+        throw std::runtime_error("could not connect to host");
     }
 }
 
@@ -93,7 +94,7 @@ int TcpClient::getDescriptor(void) const
 {
     if (!isConnected())
     {
-        throw std::string("not connected");
+        throw std::runtime_error("not connected");
     }
 
     return
@@ -104,7 +105,7 @@ void TcpClient::send(const std::string& data) const
 {
     if (!isConnected())
     {
-        throw std::string("not connected");
+        throw std::runtime_error("not connected");
     }
 
     Select select;
@@ -113,7 +114,7 @@ void TcpClient::send(const std::string& data) const
 
     if (select.execute() <= 0)
     {
-        throw std::string("could not write to socket");
+        throw std::runtime_error("could not write to socket");
     }
 
     size_t dataSize = data.size();
@@ -121,7 +122,7 @@ void TcpClient::send(const std::string& data) const
 
     if (dataSize != bytesWritten)
     {
-        throw std::string("could not write to socket");
+        throw std::runtime_error("could not write to socket");
     }
 }
 
@@ -129,7 +130,7 @@ void TcpClient::receive(std::string& data, size_t bufferSize) const
 {
     if (!isConnected())
     {
-        throw std::string("not connected");
+        throw std::runtime_error("not connected");
     }
 
     Select select;
@@ -138,7 +139,7 @@ void TcpClient::receive(std::string& data, size_t bufferSize) const
 
     if (select.execute() <= 0)
     {
-        throw std::string("read from socket timed out");
+        throw std::runtime_error("read from socket timed out");
     }
 
     std::unique_ptr<char> buffer { static_cast<char*>(malloc(bufferSize)) };

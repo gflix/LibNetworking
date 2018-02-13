@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <networking/Select.h>
 
 #define AUTO_RELOAD_TIMEOUT_DEFAULT (true)
@@ -146,7 +147,7 @@ void Select::addDescriptor(Descriptors& descriptors, int descriptor)
 {
     if (descriptor <= INVALID_DESCRIPTOR)
     {
-        throw std::string("invalid descriptor");
+        throw std::invalid_argument("invalid descriptor");
     }
 
     descriptors.insert(descriptor);
@@ -156,7 +157,7 @@ void Select::removeDescriptor(Descriptors& descriptors, int descriptor)
 {
     if (descriptor <= INVALID_DESCRIPTOR)
     {
-        throw std::string("invalid descriptor");
+        throw std::invalid_argument("invalid descriptor");
     }
 
     descriptors.erase(descriptor);
