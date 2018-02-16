@@ -21,6 +21,7 @@ libnetworking_la_LIBADD = \
 
 headerdir = $(includedir)/networking
 header_HEADERS = \
+    Conversion.h \
     Networking.h \
     Select.h
 
