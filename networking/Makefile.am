@@ -8,6 +8,8 @@ AM_CPPFLAGS = \
 lib_LTLIBRARIES = libnetworking.la
 
 libnetworking_la_SOURCES = \
+    Conversion.cpp \
+    Conversion.h \
     Networking.cpp \
     Networking.h \
     Select.cpp \

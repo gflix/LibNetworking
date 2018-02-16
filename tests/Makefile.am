@@ -7,6 +7,7 @@ TESTS = gtest
 check_PROGRAMS = $(TESTS)
 
 gtest_SOURCES = \
+	TestConversion.cpp \
     TestNetworking.cpp \
     TestSelect.cpp \
     TestSha1.cpp \
