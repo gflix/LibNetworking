@@ -15,6 +15,10 @@ public:
     static std::string binToHex(
         const std::string& bin,
         HexDigitCase hexDigitCase = HexDigitCase::LOWER);
+    static std::string hexToBin(const std::string& hex);
+
+private:
+    static unsigned char decodeHexDigit(const char& digit);
 };
 
 } /* namespace Flix */
