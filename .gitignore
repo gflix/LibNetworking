@@ -27,7 +27,7 @@
 Makefile
 Makefile.in
 /networking/Autoconf.h
-/networking/Autoconf.h.in
+/networking/Autoconf.h.in*
 /networking/networking.pc
 /networking/stamp-h1
 *.o
