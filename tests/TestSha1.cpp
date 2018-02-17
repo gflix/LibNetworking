@@ -29,3 +29,18 @@ TEST(Sha1, TestMessageHash)
     EXPECT_EQ(Flix::Conversion::binToHex(sha1.getHash()), expectedB);
     EXPECT_EQ(sha1.getMessage(), expectedC);
 }
+
+TEST(Sha1, TestLongerMessageHash)
+{
+    Flix::Sha1 sha1;
+
+    std::string message { "test1234567890" };
+    std::string expectedA { "32ab108f70a062457f0763adc66e0c0fe17a150a" };
+    std::string expectedB { "4c1036e6902d9f13432d12e6ae72bb0c23f0b88c" };
+
+    sha1.reset();
+    sha1.appendMessage(message);
+    EXPECT_EQ(Flix::Conversion::binToHex(sha1.getHash()), expectedA);
+    sha1.appendMessage(message);
+    EXPECT_EQ(Flix::Conversion::binToHex(sha1.getHash()), expectedB);
+}

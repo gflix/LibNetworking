@@ -75,10 +75,10 @@ std::string Sha1::getHash(void) const
         for (int i = 0; i < 16; ++i)
         {
             w[i] =
-                messageBlock[byteIndex] << 24 |
-                messageBlock[byteIndex + 1] << 16 |
-                messageBlock[byteIndex + 2] << 8 |
-                messageBlock[byteIndex + 3];
+                (messageBlock[byteIndex] & 0xff) << 24 |
+                (messageBlock[byteIndex + 1] & 0xff) << 16 |
+                (messageBlock[byteIndex + 2] & 0xff) << 8 |
+                (messageBlock[byteIndex + 3] & 0xff);
 
             byteIndex += 4;
         }
