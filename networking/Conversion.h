@@ -15,6 +15,7 @@ public:
     static std::string binToHex(
         const std::string& bin,
         HexDigitCase hexDigitCase = HexDigitCase::LOWER);
+    static std::string binToHexEscaped(const std::string& bin);
     static std::string hexToBin(const std::string& hex);
 
 private:

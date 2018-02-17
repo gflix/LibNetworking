@@ -36,6 +36,20 @@ std::string Conversion::binToHex(const std::string& bin, HexDigitCase hexDigitCa
     return hex;
 }
 
+std::string Conversion::binToHexEscaped(const std::string& bin)
+{
+    std::string hex;
+
+    for (auto& element: bin)
+    {
+        hex += "\\x";
+        hex += hexDigits[0][(element >> 4) & 0x0f];
+        hex += hexDigits[0][element & 0x0f];
+    }
+
+    return hex;
+}
+
 std::string Conversion::hexToBin(const std::string& hex)
 {
     if (hex.size() % 2)
