@@ -12,6 +12,8 @@ libnetworking_la_SOURCES = \
     Conversion.h \
     Networking.cpp \
     Networking.h \
+    Protocol.cpp \
+    Protocol.h \
     Select.cpp \
     Select.h
 
@@ -23,6 +25,7 @@ headerdir = $(includedir)/networking
 header_HEADERS = \
     Conversion.h \
     Networking.h \
+    Protocol.h \
     Select.h
 
 pkgconfigdir = $(libdir)/pkgconfig
