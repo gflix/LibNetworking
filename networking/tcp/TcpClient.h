@@ -2,20 +2,16 @@
 #define TCPCLIENT_TCPCLIENT_H_
 
 #include <string>
-#include <networking/tcp/GenericTcp.h>
+#include <networking/tcp/GenericTcpConnection.h>
 
 namespace Flix {
 
-class TcpClient: public GenericTcp {
+class TcpClient: public GenericTcpConnection {
 public:
     TcpClient();
     virtual ~TcpClient();
 
     void connect(std::string host, int port);
-    void disconnect(void);
-
-    void send(const std::string& data) const;
-    void receive(std::string& data, size_t bufferSize) const;
 };
 
 } /* namespace Flix */
