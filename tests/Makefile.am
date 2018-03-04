@@ -11,7 +11,8 @@ gtest_SOURCES = \
     TestNetworking.cpp \
     TestSelect.cpp \
     TestSha1.cpp \
-    TestTcpClient.cpp
+    TestTcpClient.cpp \
+    TestTcpServer.cpp
 
 gtest_CPPFLAGS = \
     $(AM_CPPFLAGS) \

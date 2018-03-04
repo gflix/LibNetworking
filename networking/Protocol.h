@@ -4,6 +4,7 @@
 namespace Flix {
 
 enum class Protocol {
+    UNDEFINED,
     IPV4,
     IPV6
 };

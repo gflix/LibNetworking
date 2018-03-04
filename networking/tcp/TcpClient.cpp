@@ -6,16 +6,13 @@
 #include <networking/Select.h>
 #include <networking/tcp/TcpClient.h>
 
-#define INVALID_DESCRIPTOR (-1)
-#define TCP_PORT_MIN (1)
-#define TCP_PORT_MAX (65535)
 #define SOCKET_READ_TIMEOUT_MICROSECS (100000)
 #define SOCKET_WRITE_TIMEOUT_MICROSECS (100000)
 
 namespace Flix {
 
 TcpClient::TcpClient():
-    descriptor(INVALID_DESCRIPTOR)
+    GenericTcp()
 {
 }
 
@@ -56,7 +53,7 @@ void TcpClient::connect(std::string host, int port)
     for (addressInfo = getAddrInfoResult; addressInfo; addressInfo = addressInfo->ai_next)
     {
         descriptor = socket(addressInfo->ai_family, addressInfo->ai_socktype, addressInfo->ai_protocol);
-        if (descriptor <= INVALID_DESCRIPTOR)
+        if (descriptor <= TCP_INVALID_DESCRIPTOR)
         {
             continue;
         }
@@ -80,25 +77,8 @@ void TcpClient::disconnect(void)
     if (isConnected())
     {
         ::close(descriptor);
-        descriptor = INVALID_DESCRIPTOR;
+        descriptor = TCP_INVALID_DESCRIPTOR;
     }
-}
-
-bool TcpClient::isConnected(void) const
-{
-    return
-        descriptor > INVALID_DESCRIPTOR;
-}
-
-int TcpClient::getDescriptor(void) const
-{
-    if (!isConnected())
-    {
-        throw std::runtime_error("not connected");
-    }
-
-    return
-        descriptor;
 }
 
 void TcpClient::send(const std::string& data) const
@@ -146,13 +126,6 @@ void TcpClient::receive(std::string& data, size_t bufferSize) const
     ssize_t bytesRead = read(descriptor, buffer.get(), bufferSize);
 
     data = std::move(std::string(buffer.get(), bytesRead));
-}
-
-bool TcpClient::withinRange(int value, int min, int max) const
-{
-    return
-        value >= min &&
-        value <= max;
 }
 
 } /* namespace Flix */

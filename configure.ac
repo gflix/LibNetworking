@@ -45,6 +45,7 @@ AC_FUNC_STRERROR_R
 
 AC_CONFIG_FILES([
     Makefile
+    examples/Makefile
     external/googletest/Makefile
     networking/Makefile
     networking/networking.pc
