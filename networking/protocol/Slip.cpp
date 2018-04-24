@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <networking/protocol/Slip.h>
 
 #define FRAME_DELIMITER (0xc0)
@@ -67,9 +68,31 @@ bool Slip::hasFrame(void) const
         secondDelimiter != std::string::npos;
 }
 
-void Slip::getFrame(std::string& frame)
+void Slip::getFrame(SlipFrame& frame)
 {
     frame.clear();
+
+    if (!hasFrame())
+    {
+        throw std::runtime_error("no frame in receive buffer");
+    }
+
+    std::string::size_type firstDelimiter, secondDelimiter;
+    getFrameDelimiters(firstDelimiter, secondDelimiter);
+
+    frame = receiveBuffer.substr(firstDelimiter + 1, secondDelimiter - firstDelimiter - 1);
+    receiveBuffer.erase(0, secondDelimiter + 1);
+}
+
+void Slip::getFrames(SlipFrames& frames)
+{
+    frames.clear();
+    while (hasFrame())
+    {
+        SlipFrame frame;
+        getFrame(frame);
+        frames.push_back(frame);
+    }
 }
 
 } /* namespace Flix */

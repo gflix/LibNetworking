@@ -50,3 +50,29 @@ TEST(Protocol, SlipFrameDelimiters)
     EXPECT_EQ(secondDelimiter, 14);
     EXPECT_TRUE(slip.hasFrame());
 }
+
+TEST(Protocol, SlipGetFrame)
+{
+    Flix::Slip slip;
+    std::string frame;
+
+    EXPECT_ANY_THROW(slip.getFrame(frame));
+
+    slip.appendReceivedData("invalid\xC0""frame\xC0""INVALID");
+    EXPECT_NO_THROW(slip.getFrame(frame));
+    EXPECT_EQ(frame, "frame");
+    EXPECT_EQ(slip.getReceiveBuffer(), "INVALID");
+}
+
+TEST(Protocol, SlipGetFrames)
+{
+    Flix::Slip slip;
+    Flix::SlipFrames frames;
+
+    slip.appendReceivedData("invalid\xC0""frame\xC0\xC0""FRAME\xC0""INVALID");
+    EXPECT_NO_THROW(slip.getFrames(frames));
+    EXPECT_EQ(frames.size(), 2);
+    EXPECT_EQ(frames[0], "frame");
+    EXPECT_EQ(frames[1], "FRAME");
+    EXPECT_EQ(slip.getReceiveBuffer(), "INVALID");
+}

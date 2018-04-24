@@ -2,8 +2,12 @@
 #define NETWORKING_PROTOCOL_SLIP_H_
 
 #include <string>
+#include <vector>
 
 namespace Flix {
+
+typedef std::string SlipFrame;
+typedef std::vector<SlipFrame> SlipFrames;
 
 class Slip {
 public:
@@ -16,7 +20,8 @@ public:
     void getFrameDelimiters(std::string::size_type& first, std::string::size_type& second) const;
 
     bool hasFrame(void) const;
-    void getFrame(std::string& frame);
+    void getFrame(SlipFrame& frame);
+    void getFrames(SlipFrames& frames);
 
 private:
     std::string receiveBuffer;
