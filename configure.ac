@@ -51,6 +51,7 @@ AC_CONFIG_FILES([
     networking/networking.pc
     networking/digest/Makefile
     networking/serial/Makefile
+    networking/protocol/Makefile
     networking/tcp/Makefile
     tests/Makefile
 ])
