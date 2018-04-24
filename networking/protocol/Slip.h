@@ -23,6 +23,9 @@ public:
     void getFrame(SlipFrame& frame);
     void getFrames(SlipFrames& frames);
 
+    std::string escapeFrame(const SlipFrame& input) const;
+    std::string unescapeFrame(const SlipFrame& input) const;
+
 private:
     std::string receiveBuffer;
 };

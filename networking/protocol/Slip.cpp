@@ -2,6 +2,9 @@
 #include <networking/protocol/Slip.h>
 
 #define FRAME_DELIMITER (0xc0)
+#define FRAME_ESCAPE_CHARACTER (0xdb)
+#define FRAME_REPLACEMENT_DELIMITER (0xdc)
+#define FRAME_REPLACEMENT_ESCAPE_CHARACTER (0xdd)
 
 namespace Flix {
 
@@ -80,7 +83,7 @@ void Slip::getFrame(SlipFrame& frame)
     std::string::size_type firstDelimiter, secondDelimiter;
     getFrameDelimiters(firstDelimiter, secondDelimiter);
 
-    frame = receiveBuffer.substr(firstDelimiter + 1, secondDelimiter - firstDelimiter - 1);
+    frame = unescapeFrame(receiveBuffer.substr(firstDelimiter + 1, secondDelimiter - firstDelimiter - 1));
     receiveBuffer.erase(0, secondDelimiter + 1);
 }
 
@@ -93,6 +96,69 @@ void Slip::getFrames(SlipFrames& frames)
         getFrame(frame);
         frames.push_back(frame);
     }
+}
+
+std::string Slip::escapeFrame(const SlipFrame& input) const
+{
+    std::string output;
+
+    for (auto& character: input)
+    {
+        if (static_cast<unsigned char>(character) == FRAME_DELIMITER)
+        {
+            output += FRAME_ESCAPE_CHARACTER;
+            output += FRAME_REPLACEMENT_DELIMITER;
+        }
+        else if (static_cast<unsigned char>(character) == FRAME_ESCAPE_CHARACTER)
+        {
+            output += FRAME_ESCAPE_CHARACTER;
+            output += FRAME_REPLACEMENT_ESCAPE_CHARACTER;
+        }
+        else
+        {
+            output += character;
+        }
+    }
+
+    return output;
+}
+
+std::string Slip::unescapeFrame(const SlipFrame& input) const
+{
+    std::string output;
+
+    for (auto character = input.cbegin(); character != input.cend(); ++character)
+    {
+        if (static_cast<unsigned char>(*character) == FRAME_DELIMITER)
+        {
+            throw std::out_of_range("delimiter character not allowed in frame");
+        }
+        if (static_cast<unsigned char>(*character) != FRAME_ESCAPE_CHARACTER)
+        {
+            output += *character;
+        }
+        else
+        {
+            ++character;
+            if (character == input.cend())
+            {
+                throw std::runtime_error("unexpected end of input");
+            }
+            switch (static_cast<unsigned char>(*character))
+            {
+            case FRAME_REPLACEMENT_DELIMITER:
+                output += FRAME_DELIMITER;
+                break;
+            case FRAME_REPLACEMENT_ESCAPE_CHARACTER:
+                output += FRAME_ESCAPE_CHARACTER;
+                break;
+            default:
+                throw std::out_of_range("escaped character is unknown");
+            }
+        }
+    }
+
+    return output;
 }
 
 } /* namespace Flix */
