@@ -11,6 +11,7 @@ AM_LDFLAGS = \
 TESTS = \
     conversion \
     networking \
+    protocol \
     select \
     sha1 \
     tcp-client \
@@ -20,6 +21,7 @@ check_PROGRAMS = $(TESTS)
 
 conversion_SOURCES = TestConversion.cpp
 networking_SOURCES = TestNetworking.cpp
+protocol_SOURCES = TestProtocol.cpp
 select_SOURCES = TestSelect.cpp
 sha1_SOURCES = TestSha1.cpp
 tcp_client_SOURCES = TestTcpClient.cpp
