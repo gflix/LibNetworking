@@ -79,7 +79,6 @@ TEST(Protocol, SlipGetFrames)
 
 TEST(Protocol, SlipEscapeFrame)
 {
-    Flix::Slip slip;
     std::string inputA { "1234" };
     std::string inputB { "1234\xC0""5678" };
     std::string expectB { "1234\xDB\xDC""5678" };
@@ -88,15 +87,14 @@ TEST(Protocol, SlipEscapeFrame)
     std::string inputD { "1234\xC0\xC0""5678" };
     std::string expectD { "1234\xDB\xDC\xDB\xDC""5678" };
 
-    EXPECT_EQ(slip.escapeFrame(inputA), inputA);
-    EXPECT_EQ(slip.escapeFrame(inputB), expectB);
-    EXPECT_EQ(slip.escapeFrame(inputC), expectC);
-    EXPECT_EQ(slip.escapeFrame(inputD), expectD);
+    EXPECT_EQ(Flix::Slip::escapeFrame(inputA), inputA);
+    EXPECT_EQ(Flix::Slip::escapeFrame(inputB), expectB);
+    EXPECT_EQ(Flix::Slip::escapeFrame(inputC), expectC);
+    EXPECT_EQ(Flix::Slip::escapeFrame(inputD), expectD);
 }
 
 TEST(Protocol, SlipUnescapeFrame)
 {
-    Flix::Slip slip;
     std::string inputA { "1234" };
     std::string inputB { "12\xC0""34" };
     std::string inputC { "1234\xDB\xDC""5678" };
@@ -106,9 +104,20 @@ TEST(Protocol, SlipUnescapeFrame)
     std::string inputE { "1234\xDB\xDC\xDB\xDC""5678" };
     std::string expectE { "1234\xC0\xC0""5678" };
 
-    EXPECT_EQ(slip.unescapeFrame(inputA), inputA);
-    EXPECT_ANY_THROW(slip.unescapeFrame(inputB));
-    EXPECT_EQ(slip.unescapeFrame(inputC), expectC);
-    EXPECT_EQ(slip.unescapeFrame(inputD), expectD);
-    EXPECT_EQ(slip.unescapeFrame(inputE), expectE);
+    EXPECT_EQ(Flix::Slip::unescapeFrame(inputA), inputA);
+    EXPECT_ANY_THROW(Flix::Slip::unescapeFrame(inputB));
+    EXPECT_EQ(Flix::Slip::unescapeFrame(inputC), expectC);
+    EXPECT_EQ(Flix::Slip::unescapeFrame(inputD), expectD);
+    EXPECT_EQ(Flix::Slip::unescapeFrame(inputE), expectE);
+}
+
+TEST(Protocol, SlipEncodeFrame)
+{
+    std::string inputA { "1234" };
+    std::string expectA { "\xC0""1234\xC0" };
+    std::string inputB { "12\xC0""34" };
+    std::string expectB { "\xC0""12\xDB\xDC""34\xC0" };
+
+    EXPECT_EQ(Flix::Slip::encodeFrame(inputA), expectA);
+    EXPECT_EQ(Flix::Slip::encodeFrame(inputB), expectB);
 }

@@ -98,7 +98,15 @@ void Slip::getFrames(SlipFrames& frames)
     }
 }
 
-std::string Slip::escapeFrame(const SlipFrame& input) const
+std::string Slip::encodeFrame(const SlipFrame& frame)
+{
+    std::string frameDelimiter;
+    frameDelimiter.push_back(FRAME_DELIMITER);
+    return
+        frameDelimiter + escapeFrame(frame) + frameDelimiter;
+}
+
+std::string Slip::escapeFrame(const SlipFrame& input)
 {
     std::string output;
 
@@ -123,7 +131,7 @@ std::string Slip::escapeFrame(const SlipFrame& input) const
     return output;
 }
 
-std::string Slip::unescapeFrame(const SlipFrame& input) const
+std::string Slip::unescapeFrame(const SlipFrame& input)
 {
     std::string output;
 

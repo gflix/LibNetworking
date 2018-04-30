@@ -23,8 +23,10 @@ public:
     void getFrame(SlipFrame& frame);
     void getFrames(SlipFrames& frames);
 
-    std::string escapeFrame(const SlipFrame& input) const;
-    std::string unescapeFrame(const SlipFrame& input) const;
+    static std::string encodeFrame(const SlipFrame& frame);
+
+    static std::string escapeFrame(const SlipFrame& input);
+    static std::string unescapeFrame(const SlipFrame& input);
 
 private:
     std::string receiveBuffer;
