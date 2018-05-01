@@ -2,6 +2,7 @@
 #define SRC_GENERICTHREAD_H_
 
 #include <thread>
+#include <networking/Select.h>
 
 #define CONTROL_PIPE_OUT (1)
 #define CONTROL_PIPE_IN (0)
@@ -33,9 +34,9 @@ protected:
     int periodicTaskInterval;
 
     virtual bool setup(void) = 0;
-    virtual bool task(fd_set& descriptors) = 0;
+    virtual bool task(const Select& select) = 0;
     virtual bool periodicTask(void);
-    virtual void updateDescriptors(int& maxDescriptor, fd_set& descriptors, timeval& timeout);
+    virtual void updateDescriptors(Select& select);
     void setPeriodicTaskInterval(int seconds);
 
     int max(int a, int b) const;

@@ -68,7 +68,7 @@ bool GenericThread::periodicTask(void)
     return true;
 }
 
-void GenericThread::updateDescriptors(int& maxDescriptor, fd_set& descriptors, timeval& timeout)
+void GenericThread::updateDescriptors(Select& select)
 {
 }
 
@@ -84,9 +84,7 @@ int GenericThread::max(int a, int b) const
 
 void GenericThread::run(void)
 {
-    int maxDescriptor;
-    fd_set descriptors;
-    timeval timeout;
+    Select select;
     timespec lastRunPeriodicTask;
 
     if (!silent) LOG_INFO("Started thread \"" << identifier << "\"");
@@ -94,30 +92,25 @@ void GenericThread::run(void)
     clock_gettime(CLOCK_MONOTONIC_COARSE, &lastRunPeriodicTask);
 
     do {
-        timeout.tv_sec = periodicTaskInterval / 2;
-        timeout.tv_usec = 0;
+        select.setTimeout(periodicTaskInterval / 2);
+        select.addReadDescriptor(controlPipe[CONTROL_PIPE_IN]);
+        updateDescriptors(select);
 
-        FD_ZERO(&descriptors);
-        FD_SET(controlPipe[CONTROL_PIPE_IN], &descriptors);
-        maxDescriptor = controlPipe[CONTROL_PIPE_IN];
-
-        updateDescriptors(maxDescriptor, descriptors, timeout);
-
-        if (select(maxDescriptor + 1, &descriptors, nullptr, nullptr, &timeout) > 0) {
-            if (FD_ISSET(controlPipe[CONTROL_PIPE_IN], &descriptors)) {
+        if (select.execute() > 0) {
+            if (select.readDescriptorIsSet(controlPipe[CONTROL_PIPE_IN])) {
                 ThreadControl threadControl = ThreadControl::UNKNOWN;
                 ssize_t readBytes = read(controlPipe[CONTROL_PIPE_IN], &threadControl, sizeof(ThreadControl));
                 if (threadControl == ThreadControl::QUIT) {
                     if (!silent) LOG_DEBUG("Thread \"" << identifier << "\" received quit signal.");
                     break;
                 } else if (threadControl == ThreadControl::TASK) {
-                    if (!task(descriptors)) {
+                    if (!task(select)) {
                         LOG_ERROR("Task of thread \"" << identifier << "\" failed!");
                         break;
                     }
                 }
             } else {
-                if (!task(descriptors)) {
+                if (!task(select)) {
                     LOG_ERROR("Task of thread \"" << identifier << "\" failed!");
                     break;
                 }
