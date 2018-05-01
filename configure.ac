@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([libnetworking], [0.2.0-pre3], [felix.mellmann@gmail.com])
+AC_INIT([libnetworking], [0.2.2], [felix.mellmann@gmail.com])
 AC_CONFIG_SRCDIR([networking/Networking.cpp])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -25,6 +25,7 @@ LT_INIT
 AC_CHECK_HEADER_STDBOOL
 AC_CHECK_HEADERS([netdb.h unistd.h arpa/inet.h fcntl.h float.h limits.h])
 AC_CHECK_HEADERS([stddef.h sys/socket.h sys/time.h sys/timeb.h wchar.h wctype.h])
+AC_CHECK_HEADERS([systemd/sd-daemon.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_INLINE
@@ -53,6 +54,7 @@ AC_CONFIG_FILES([
     networking/serial/Makefile
     networking/protocol/Makefile
     networking/tcp/Makefile
+    networking/utils/Makefile
     tests/Makefile
 ])
 AC_OUTPUT
