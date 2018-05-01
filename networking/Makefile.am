@@ -2,7 +2,8 @@ SUBDIRS = \
     digest \
     protocol \
     serial \
-    tcp
+    tcp \
+    utils
 
 AM_CPPFLAGS = \
     -I$(top_srcdir)
@@ -23,7 +24,8 @@ libnetworking_la_LIBADD = \
     $(top_builddir)/networking/digest/libnetworking-digest.la \
     $(top_builddir)/networking/protocol/libnetworking-protocol.la \
     $(top_builddir)/networking/serial/libnetworking-serial.la \
-    $(top_builddir)/networking/tcp/libnetworking-tcp.la
+    $(top_builddir)/networking/tcp/libnetworking-tcp.la \
+    $(top_builddir)/networking/utils/libnetworking-utils.la
 
 headerdir = $(includedir)/networking
 header_HEADERS = \
