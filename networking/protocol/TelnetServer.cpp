@@ -5,8 +5,13 @@
 
 namespace Flix {
 
-TelnetServer::TelnetServer(int port, Protocol protocol, const std::string& defaultPrompt):
+TelnetServer::TelnetServer(
+    GenericTelnetService* telnetService,
+    int port,
+    Protocol protocol,
+    const std::string& defaultPrompt):
     GenericThread("TelnetServer"),
+    telnetService(telnetService),
     port(port),
     protocol(protocol),
     defaultPrompt(defaultPrompt)
@@ -63,7 +68,7 @@ bool TelnetServer::task(const Select& select)
                 std::string(clientIpAddressBuffer) + ':' + std::to_string(ntohs(clientAddress.sin_port));
 
             connectionThread =
-                new TelnetServerConnection(clientDescriptor, clientIpAddress, defaultPrompt, welcomeMessage);
+                new TelnetServerConnection(telnetService, clientDescriptor, clientIpAddress, defaultPrompt, welcomeMessage);
         }
     }
     else if (protocol == Protocol::IPV6)
@@ -80,7 +85,7 @@ bool TelnetServer::task(const Select& select)
                 std::string(clientIpAddressBuffer) + ':' + std::to_string(ntohs(clientAddress.sin6_port));
 
             connectionThread =
-                new TelnetServerConnection(clientDescriptor, clientIpAddress, defaultPrompt, welcomeMessage);
+                new TelnetServerConnection(telnetService, clientDescriptor, clientIpAddress, defaultPrompt, welcomeMessage);
         }
     }
 

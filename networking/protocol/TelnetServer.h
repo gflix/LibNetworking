@@ -3,13 +3,18 @@
 
 #include <networking/utils/GenericThread.h>
 #include <networking/tcp/TcpServer.h>
+#include <networking/protocol/GenericTelnetService.h>
 #include <networking/protocol/TelnetServerConnection.h>
 
 namespace Flix {
 
 class TelnetServer: public GenericThread {
 public:
-    TelnetServer(int port, Protocol protocol = Protocol::IPV4, const std::string& defaultPrompt = "> ");
+    TelnetServer(
+        GenericTelnetService* telnetService,
+        int port,
+        Protocol protocol = Protocol::IPV4,
+        const std::string& defaultPrompt = "> ");
     virtual ~TelnetServer();
 
     void setDefaultPrompt(const std::string& defaultPrompt);
@@ -21,6 +26,7 @@ protected:
     virtual void updateDescriptors(Select& select) override;
 
 private:
+    GenericTelnetService* telnetService;
     int port;
     Protocol protocol;
     std::string defaultPrompt;

@@ -4,6 +4,8 @@ AM_CPPFLAGS = \
 noinst_LTLIBRARIES = libnetworking-protocol.la
 
 libnetworking_protocol_la_SOURCES = \
+    GenericTelnetService.cpp \
+    GenericTelnetService.h \
     Slip.cpp \
     Slip.h \
     TelnetServer.cpp \
@@ -13,6 +15,7 @@ libnetworking_protocol_la_SOURCES = \
 
 headerdir = $(includedir)/networking/protocol
 header_HEADERS = \
+    GenericTelnetService.h \
     Slip.h \
     TelnetServer.h \
     TelnetServerConnection.h
