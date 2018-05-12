@@ -22,6 +22,7 @@ public:
 
     bool start(void);
     bool stop(void);
+    bool runTask(void);
 
     bool threadHasFinished(void) const;
 
@@ -42,6 +43,7 @@ protected:
     int max(int a, int b) const;
 
 private:
+    void sendSignal(ThreadControl threadControl);
     virtual void run(void);
 };
 

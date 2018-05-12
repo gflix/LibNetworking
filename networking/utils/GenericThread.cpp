@@ -48,14 +48,44 @@ bool GenericThread::stop(void)
         return false;
     }
 
-    ThreadControl threadControl = ThreadControl::QUIT;
-    ssize_t bytesWritten = write(controlPipe[CONTROL_PIPE_OUT], &threadControl, sizeof(threadControl));
+    bool returnValue = true;
+    try
+    {
+        sendSignal(ThreadControl::QUIT);
+    }
+    catch (std::exception& e)
+    {
+        LOG_ERROR("Error stopping thread \"" << identifier << "\" (" << e.what() << ")!");
+        returnValue = false;
+    }
 
     genericThread->join();
     delete genericThread;
     genericThread = nullptr;
 
-    return bytesWritten > 0;
+    return
+        returnValue;
+}
+
+bool GenericThread::runTask(void)
+{
+    if (!genericThread) {
+        return false;
+    }
+
+    bool returnValue = true;
+    try
+    {
+        sendSignal(ThreadControl::TASK);
+    }
+    catch (std::exception& e)
+    {
+        LOG_ERROR("Error running task of thread \"" << identifier << "\" (" << e.what() << ")!");
+        returnValue = false;
+    }
+
+    return
+        returnValue;
 }
 
 bool GenericThread::threadHasFinished(void) const
@@ -80,6 +110,16 @@ void GenericThread::setPeriodicTaskInterval(int seconds)
 int GenericThread::max(int a, int b) const
 {
     return a > b ? a : b;
+}
+
+void GenericThread::sendSignal(ThreadControl threadControl)
+{
+    ssize_t bytesWritten = write(controlPipe[CONTROL_PIPE_OUT], &threadControl, sizeof(threadControl));
+
+    if (bytesWritten <= 0)
+    {
+        throw std::runtime_error("failed to send thread signal");
+    }
 }
 
 void GenericThread::run(void)
