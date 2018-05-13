@@ -50,6 +50,26 @@ std::string Conversion::binToHexEscaped(const std::string& bin)
     return hex;
 }
 
+std::string Conversion::binToAscii(const std::string& bin)
+{
+    std::string ascii;
+
+    for (auto& element: bin)
+    {
+        int value = static_cast<unsigned char>(element);
+        if (value >= 32 && value < 127)
+        {
+            ascii += element;
+        }
+        else
+        {
+            ascii += '.';
+        }
+    }
+
+    return ascii;
+}
+
 std::string Conversion::hexToBin(const std::string& hex)
 {
     if (hex.size() % 2)
@@ -74,6 +94,18 @@ std::string Conversion::hexToBin(const std::string& hex)
     }
 
     return bin;
+}
+
+std::string Conversion::reverse(const std::string& text)
+{
+    std::string reversedText;
+
+    for (auto it = text.crbegin(); it != text.crend(); ++it)
+    {
+        reversedText += *it;
+    }
+
+    return reversedText;
 }
 
 unsigned char Conversion::decodeHexDigit(const char& digit)

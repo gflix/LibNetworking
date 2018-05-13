@@ -16,7 +16,9 @@ public:
         const std::string& bin,
         HexDigitCase hexDigitCase = HexDigitCase::LOWER);
     static std::string binToHexEscaped(const std::string& bin);
+    static std::string binToAscii(const std::string& bin);
     static std::string hexToBin(const std::string& hex);
+    static std::string reverse(const std::string& text);
 
 private:
     static unsigned char decodeHexDigit(const char& digit);
