@@ -108,6 +108,43 @@ std::string Conversion::reverse(const std::string& text)
     return reversedText;
 }
 
+unsigned long long Conversion::binToUnsigned(const std::string& bin)
+{
+    if (bin.size() > 8)
+    {
+        throw std::invalid_argument("too much input");
+    }
+
+    unsigned long long value = 0;
+    for (auto it = bin.crbegin(); it != bin.crend(); ++it)
+    {
+        unsigned char characterValue = static_cast<unsigned char>(*it);
+
+        value = (value << 8) | characterValue;
+    }
+
+    return value;
+}
+
+signed long long Conversion::binToSigned(const std::string& bin)
+{
+    std::string paddedBin { bin };
+
+    if (!paddedBin.empty())
+    {
+        // if the most significant bit is set, pad the input with 0xff until its 8 bytes long
+        if (static_cast<unsigned char>(paddedBin[paddedBin.size() - 1]) & 0x80)
+        {
+            while (paddedBin.size() < 8)
+            {
+                paddedBin += '\xff';
+            }
+        }
+    }
+
+    return static_cast<signed long long>(binToUnsigned(paddedBin));
+}
+
 unsigned char Conversion::decodeHexDigit(const char& digit)
 {
     if (digit >= '0' && digit <= '9')

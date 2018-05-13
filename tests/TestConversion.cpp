@@ -62,3 +62,53 @@ TEST(Conversion, Reverse)
 
     EXPECT_EQ(Flix::Conversion::reverse(input), expected);
 }
+
+TEST(Conversion, BinToUnsigned)
+{
+    std::string inputA { "\xab" };
+    unsigned long long expectedA = 171;
+    std::string inputB { "\xab\xcd" };
+    unsigned long long expectedB = 52651;
+    std::string inputC { "\xab\xcd\xef" };
+    unsigned long long expectedC = 15715755;
+    std::string inputD { "\xab\xcd\xef\x01" };
+    unsigned long long expectedD = 32492971;
+    std::string inputE { "\xab\xcd\xef\x01\x23" };
+    unsigned long long expectedE = 150356348331;
+    std::string inputF { "\xab\xcd\xef\x01\x23\x45" };
+    unsigned long long expectedF = 76016658664875;
+    std::string inputG { "\xab\xcd\xef\x01\x23\x45\x67" };
+    unsigned long long expectedG = 29067939259862443;
+    std::string inputH { "\xab\xcd\xef\x01\x23\x45\x67\x89" };
+    unsigned long long expectedH = 9900958322455989675;
+
+    EXPECT_EQ(Flix::Conversion::binToUnsigned(inputA), expectedA);
+    EXPECT_EQ(Flix::Conversion::binToUnsigned(inputB), expectedB);
+    EXPECT_EQ(Flix::Conversion::binToUnsigned(inputC), expectedC);
+    EXPECT_EQ(Flix::Conversion::binToUnsigned(inputD), expectedD);
+    EXPECT_EQ(Flix::Conversion::binToUnsigned(inputE), expectedE);
+    EXPECT_EQ(Flix::Conversion::binToUnsigned(inputF), expectedF);
+    EXPECT_EQ(Flix::Conversion::binToUnsigned(inputG), expectedG);
+    EXPECT_EQ(Flix::Conversion::binToUnsigned(inputH), expectedH);
+}
+
+TEST(Conversion, BinToUnsignedInvalidArgument)
+{
+    std::string input { "123456789" };
+
+    EXPECT_ANY_THROW(Flix::Conversion::binToUnsigned(input));
+}
+
+TEST(Conversion, BinToSigned)
+{
+    std::string inputA { "\xfd" };
+    signed long long expectedA = -3;
+    std::string inputB { "\x7f" };
+    signed long long expectedB = 127;
+    std::string inputC { "\xfe\xff\xff\xff\xff\xff\xff\xff" };
+    signed long long expectedC = -2;
+
+    EXPECT_EQ(Flix::Conversion::binToSigned(inputA), expectedA);
+    EXPECT_EQ(Flix::Conversion::binToSigned(inputB), expectedB);
+    EXPECT_EQ(Flix::Conversion::binToSigned(inputC), expectedC);
+}

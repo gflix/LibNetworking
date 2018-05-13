@@ -20,6 +20,9 @@ public:
     static std::string hexToBin(const std::string& hex);
     static std::string reverse(const std::string& text);
 
+    static unsigned long long binToUnsigned(const std::string& bin);
+    static signed long long binToSigned(const std::string& bin);
+
 private:
     static unsigned char decodeHexDigit(const char& digit);
 };
