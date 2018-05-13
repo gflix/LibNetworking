@@ -46,3 +46,19 @@ TEST(Conversion, HexToBinToHex)
     EXPECT_EQ(Flix::Conversion::binToHex(Flix::Conversion::hexToBin(hex)),
         hex);
 }
+
+TEST(Conversion, BinToAscii)
+{
+    std::string bin { "\x01 234 \x05" };
+    std::string expected { ". 234 ." };
+
+    EXPECT_EQ(Flix::Conversion::binToAscii(bin), expected);
+}
+
+TEST(Conversion, Reverse)
+{
+    std::string input { "0123456789" };
+    std::string expected { "9876543210" };
+
+    EXPECT_EQ(Flix::Conversion::reverse(input), expected);
+}
