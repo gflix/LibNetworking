@@ -126,6 +126,11 @@ unsigned long long Conversion::binToUnsigned(const std::string& bin)
     return value;
 }
 
+unsigned long long Conversion::binToUnsigned(char character)
+{
+    return binToUnsigned(std::string(1, character));
+}
+
 signed long long Conversion::binToSigned(const std::string& bin)
 {
     std::string paddedBin { bin };
@@ -143,6 +148,11 @@ signed long long Conversion::binToSigned(const std::string& bin)
     }
 
     return static_cast<signed long long>(binToUnsigned(paddedBin));
+}
+
+signed long long Conversion::binToSigned(char character)
+{
+    return binToSigned(std::string(1, character));
 }
 
 unsigned char Conversion::decodeHexDigit(const char& digit)

@@ -80,7 +80,7 @@ TEST(Conversion, BinToUnsigned)
     std::string inputG { "\xab\xcd\xef\x01\x23\x45\x67" };
     unsigned long long expectedG = 29067939259862443;
     std::string inputH { "\xab\xcd\xef\x01\x23\x45\x67\x89" };
-    unsigned long long expectedH = 9900958322455989675;
+    unsigned long long expectedH = 9900958322455989675ULL;
 
     EXPECT_EQ(Flix::Conversion::binToUnsigned(inputA), expectedA);
     EXPECT_EQ(Flix::Conversion::binToUnsigned(inputB), expectedB);
@@ -90,6 +90,14 @@ TEST(Conversion, BinToUnsigned)
     EXPECT_EQ(Flix::Conversion::binToUnsigned(inputF), expectedF);
     EXPECT_EQ(Flix::Conversion::binToUnsigned(inputG), expectedG);
     EXPECT_EQ(Flix::Conversion::binToUnsigned(inputH), expectedH);
+}
+
+TEST(Conversion, BinToUnsignedFromCharacter)
+{
+    char inputA = '\xab';
+    unsigned long long expectedA = 171;
+
+    EXPECT_EQ(Flix::Conversion::binToUnsigned(inputA), expectedA);
 }
 
 TEST(Conversion, BinToUnsignedInvalidArgument)
@@ -111,4 +119,12 @@ TEST(Conversion, BinToSigned)
     EXPECT_EQ(Flix::Conversion::binToSigned(inputA), expectedA);
     EXPECT_EQ(Flix::Conversion::binToSigned(inputB), expectedB);
     EXPECT_EQ(Flix::Conversion::binToSigned(inputC), expectedC);
+}
+
+TEST(Conversion, BinToSignedFromCharacter)
+{
+    char inputA = '\xfe';
+    signed long long expectedA = -2;
+
+    EXPECT_EQ(Flix::Conversion::binToSigned(inputA), expectedA);
 }

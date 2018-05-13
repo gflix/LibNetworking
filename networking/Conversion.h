@@ -21,7 +21,9 @@ public:
     static std::string reverse(const std::string& text);
 
     static unsigned long long binToUnsigned(const std::string& bin);
+    static unsigned long long binToUnsigned(char character);
     static signed long long binToSigned(const std::string& bin);
+    static signed long long binToSigned(char character);
 
 private:
     static unsigned char decodeHexDigit(const char& digit);
